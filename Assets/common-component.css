@@ -1,0 +1,12 @@
+.title-wrapper-with-link{margin-bottom:0;}
+.inner_content {
+    position: relative;
+}
+.inner_content img{max-width:100%;}
+.sub_content {
+    position: absolute;
+    bottom: 8%;
+    left: 8%;
+}
+.sub_content h2,.sub_content p,.sub_content a{color:#fff;margin:0;}
+.sub_content h2{font-weight:600;}
