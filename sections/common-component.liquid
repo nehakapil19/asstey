@@ -1,0 +1,144 @@
+{{ 'common-component.css' | asset_url | stylesheet_tag}}
+
+<script src="https://npmcdn.com/flickity@1.2/dist/flickity.pkgd.min.js"></script>
+<link rel="stylesheet" href="https://npmcdn.com/flickity@1.2/dist/flickity.min.css">
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+.carousel {padding-left:0;}
+.carousel-cell {
+  height:auto;
+  margin-right:8px;
+}
+
+.carousel:after {
+  content: "flickity";
+  display: none;
+}
+  .flickity-prev-next-button{display:none;}
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+<div class="component-wrap">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+    <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin">
+       
+      <h2 class="title h1">
+         {{ section.settings.title }}
+      </h2>
+        </div>
+       {% endif %}
+       {% assign count = '' %}
+       {% for block in section.blocks %}
+         {% assign count = forloop.length %}
+         {% endfor %}
+        {% if section.settings.sub_title != blank %}
+      <p class="subheading">{{ section.settings.sub_title }}</p>
+         {% endif %}
+         
+         <ul class=" {% if count == 3  %}grid{% endif %} grid--1-col-tablet-down grid--3-col-desktop {% if count > 3  %}carousel js-flickity{% endif %}" {% if count > 3 %}data-flickity-options='{ "imagesLoaded":"true", "autoPlay": "true","wrapAround": "true","watchCSS": "true","prevNextButtons": "false,"}'{% endif %}>
+           {% for block in section.blocks %}
+             <li class="grid__item {% if count > 3 %} carousel-cell{% endif %}">
+               <div class="inner_content">
+               {% if block.settings.image != blank %}
+                 <img src="{{ block.settings.image | img_url:'master' }}">
+                 {% endif %}
+                 <div class="sub_content">
+                   {% if block.settings.title != blank %}
+                     <h2>{{ block.settings.title }}</h2>
+                     {% endif %}
+                   {% if block.settings.sub_title != blank %}
+                     <p>{{ block.settings.sub_title }}</p>
+                   {% endif %}
+                   {% if block.settings.link_label != blank %}
+                     <a href="{{ block.settings.link }}">{{ block.settings.link_label }}</a>
+                   {% endif %}
+                 </div>
+               </div>
+             </li>
+             {% endfor %}
+         </ul>
+  </div>
+     
+</div>
+
+
+{% schema %}
+{
+  "name": "Common Component",
+  "class": "common section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Heading",
+      "label": "Heading"
+    },
+    {
+      "type":"text",
+      "id":"sub_title",
+      "default":"Sub Heading",
+      "label":"Sub Heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "columns",
+      "name": "Columns",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "sub_title",
+          "default": "Sub Title",
+          "label": "Sub Title"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link Label",
+           "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "default":"/collections/all"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Common Component",
+      "blocks": [
+        {
+          "type": "columns"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
