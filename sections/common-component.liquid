@@ -28,22 +28,47 @@
 {%- endstyle -%}
 <div class="component-wrap">
   <div class="page-width">
+    
+        {% assign count = '' %}
+       {% for block in section.blocks %}
+         {% assign count = forloop.length %}
+         {% endfor %}
+        {% assign productM = '' %}
+        {% assign true = '' %}
+      {% for i in (1..count) %}
+  {% assign dummy = 'title' | append:i %}
+  {% assign tit = product.metafields.custom[dummy] %}
+            {% if tit != blank %}
+              {% assign true = 'yes' %}
+              {% assign productM = i %}
+             {% endif %}
+{% endfor %}
+ {% assign collectionM = '' %}
+      {% for j in (1..count) %}
+  {% assign dummy = 'title' | append:j %}
+  {% assign earring = collection.metafields.custom[dummy] %}
+            {% if earring != blank %}
+              {% assign collectionM = j %}
+             {% endif %}
+{% endfor %}
+   {% unless template == 'product' or template == 'collection' %}
     {% if section.settings.title != blank %}
     <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin">
-       
+      
+   
       <h2 class="title h1">
          {{ section.settings.title }}
       </h2>
         </div>
        {% endif %}
-       {% assign count = '' %}
-       {% for block in section.blocks %}
-         {% assign count = forloop.length %}
-         {% endfor %}
+     
+ 
         {% if section.settings.sub_title != blank %}
       <p class="subheading">{{ section.settings.sub_title }}</p>
          {% endif %}
-         
+          {% assign productM = '' %}
+        
+  
          <ul class=" {% if count == 3  %}grid{% endif %} grid--1-col-tablet-down grid--3-col-desktop {% if count > 3  %}carousel js-flickity{% endif %}" {% if count > 3 %}data-flickity-options='{ "imagesLoaded":"true", "autoPlay": "true","wrapAround": "true","watchCSS": "true","prevNextButtons": "false,"}'{% endif %}>
            {% for block in section.blocks %}
              <li class="grid__item {% if count > 3 %} carousel-cell{% endif %}">
@@ -66,6 +91,94 @@
              </li>
              {% endfor %}
          </ul>
+     {% endunless %}
+
+     {% if template == 'product' %}
+       {% unless productM == '' %}
+    {% if section.settings.title != blank %}
+    <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin">
+      
+   
+      <h2 class="title h1">
+         {{ section.settings.title }}
+      </h2>
+        </div>
+       {% endif %}
+     
+ 
+        {% if section.settings.sub_title != blank %}
+      <p class="subheading">{{ section.settings.sub_title }}</p>
+         {% endif %}
+        
+  
+         <ul class=" {% if productM == 3  %}grid{% endif %} grid--1-col-tablet-down grid--3-col-desktop {% if productM > 3  %}carousel js-flickity{% endif %}" {% if productM > 3 %}data-flickity-options='{ "imagesLoaded":"true", "autoPlay": "true","wrapAround": "true","watchCSS": "true","prevNextButtons": "false,"}'{% endif %}>
+           {% for block in section.blocks %}
+             <li class="grid__item {% if productM > 3 %} carousel-cell{% endif %}">
+               <div class="inner_content">
+               {% if block.settings.image != blank %}
+                 <img src="{{ block.settings.image | img_url:'master' }}">
+                 {% endif %}
+                 <div class="sub_content">
+                   {% if block.settings.title != blank %}
+                     <h2>{{ block.settings.title }}</h2>
+                     {% endif %}
+                   {% if block.settings.sub_title != blank %}
+                     <p>{{ block.settings.sub_title }}</p>
+                   {% endif %}
+         
+                   {% if block.settings.link_label != blank %}
+                     <a href="{{ block.settings.link }}">{{ block.settings.link_label }}</a>
+                   {% endif %}
+                 </div>
+               </div>
+             </li>
+             {% endfor %}
+         </ul>
+     {% endunless %}
+     {% endif %}
+
+         {% if template == 'collection' %}
+       {% unless collectionM == '' %}
+    {% if section.settings.title != blank %}
+    <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin">
+      
+   
+      <h2 class="title h1">
+         {{ section.settings.title }}
+      </h2>
+        </div>
+       {% endif %}
+     
+ 
+        {% if section.settings.sub_title != blank %}
+      <p class="subheading">{{ section.settings.sub_title }}</p>
+         {% endif %}
+        
+  
+         <ul class=" {% if collectionM == 3  %}grid{% endif %} grid--1-col-tablet-down grid--3-col-desktop {% if collectionM > 3  %}carousel js-flickity{% endif %}" {% if collectionM > 3 %}data-flickity-options='{ "imagesLoaded":"true", "autoPlay": "true","wrapAround": "true","watchCSS": "true","prevNextButtons": "false,"}'{% endif %}>
+           {% for block in section.blocks %}
+             <li class="grid__item {% if collectionM > 3 %} carousel-cell{% endif %}">
+               <div class="inner_content">
+               {% if block.settings.image != blank %}
+                 <img src="{{ block.settings.image | img_url:'master' }}">
+                 {% endif %}
+                 <div class="sub_content">
+                   {% if block.settings.title != blank %}
+                     <h2>{{ block.settings.title }}</h2>
+                     {% endif %}
+                   {% if block.settings.sub_title != blank %}
+                     <p>{{ block.settings.sub_title }}</p>
+                   {% endif %}
+                   {% if block.settings.link_label != blank %}
+                     <a href="{{ block.settings.link }}">{{ block.settings.link_label }}</a>
+                   {% endif %}
+                 </div>
+               </div>
+             </li>
+             {% endfor %}
+         </ul>
+     {% endunless %}
+     {% endif %}
   </div>
      
 </div>
